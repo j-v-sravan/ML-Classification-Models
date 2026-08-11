@@ -156,6 +156,12 @@ if "use_default_data" not in st.session_state:
 if "selected_file" not in st.session_state:
     st.session_state.selected_file = None
 
+
+def clear_default_file():
+    st.session_state.use_default_data = False
+    st.session_state.selected_file = None
+    st.experimental_rerun()
+
 with st.sidebar:
     st.header("Controls")
 
@@ -177,8 +183,7 @@ with st.sidebar:
         st.markdown("**Current file:** `test_data.csv` (default)")
         st.caption("This file is loaded automatically from the project root.")
         if st.button("Remove default test_data.csv", key="remove_default"):
-            st.session_state.use_default_data = False
-            st.session_state.selected_file = None
+            clear_default_file()
     else:
         st.markdown(
             "No file selected. Upload `test_data.csv` or another compatible CSV file in the sidebar."
