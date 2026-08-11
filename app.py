@@ -172,6 +172,7 @@ with st.sidebar:
         st.caption("This file is loaded automatically from the project root.")
         if st.button("Remove default test_data.csv", key="remove_default"):
             st.session_state.use_default_data = False
+            uploaded = None
     else:
         st.markdown(
             "No file selected. Upload `test_data.csv` or another compatible CSV file in the sidebar."
