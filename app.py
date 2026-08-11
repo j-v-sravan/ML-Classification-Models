@@ -155,18 +155,11 @@ if "use_default_data" not in st.session_state:
     st.session_state.use_default_data = default_exists
 if "selected_file" not in st.session_state:
     st.session_state.selected_file = None
-if "clear_uploaded_widget" not in st.session_state:
-    st.session_state.clear_uploaded_widget = False
 
 
 def clear_default_file():
     st.session_state.use_default_data = False
     st.session_state.selected_file = None
-    st.session_state.clear_uploaded_widget = True
-
-if st.session_state.clear_uploaded_widget and "file_upload_widget" in st.session_state:
-    st.session_state.file_upload_widget = None
-    st.session_state.clear_uploaded_widget = False
 
 with st.sidebar:
     st.header("Controls")
@@ -188,8 +181,11 @@ with st.sidebar:
     elif default_exists and st.session_state.use_default_data:
         st.markdown("**Current file:** `test_data.csv` (default)")
         st.caption("This file is loaded automatically from the project root.")
-        if st.button("Remove default test_data.csv", key="remove_default"):
-            clear_default_file()
+        st.button(
+            "Remove default test_data.csv",
+            key="remove_default",
+            on_click=clear_default_file,
+        )
     else:
         st.markdown(
             "No file selected. Upload `test_data.csv` or another compatible CSV file in the sidebar."
