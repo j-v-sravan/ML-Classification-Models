@@ -153,6 +153,8 @@ default_exists = os.path.exists(default_test_file)
 
 if "use_default_data" not in st.session_state:
     st.session_state.use_default_data = default_exists
+if "selected_file" not in st.session_state:
+    st.session_state.selected_file = None
 
 with st.sidebar:
     st.header("Controls")
@@ -165,16 +167,18 @@ with st.sidebar:
     )
 
     if uploaded is not None:
+        st.session_state.selected_file = uploaded
         st.session_state.use_default_data = False
-        st.markdown(f"**Current file:** `{uploaded.name}`")
+
+    if st.session_state.selected_file is not None:
+        st.markdown(f"**Current file:** `{st.session_state.selected_file.name}`")
         st.caption("Upload another file to replace it.")
     elif default_exists and st.session_state.use_default_data:
         st.markdown("**Current file:** `test_data.csv` (default)")
         st.caption("This file is loaded automatically from the project root.")
         if st.button("Remove default test_data.csv", key="remove_default"):
             st.session_state.use_default_data = False
-            st.session_state.uploaded_file = None
-            st.experimental_rerun()
+            st.session_state.selected_file = None
     else:
         st.markdown(
             "No file selected. Upload `test_data.csv` or another compatible CSV file in the sidebar."
@@ -195,8 +199,8 @@ tabs = st.tabs(["Results", "Dataset Info", "About"])
 # TAB 1: Results
 
 with tabs[0]:
-    if uploaded is not None:
-        raw_df = pd.read_csv(uploaded)
+    if st.session_state.selected_file is not None:
+        raw_df = pd.read_csv(st.session_state.selected_file)
     elif default_exists and st.session_state.use_default_data:
         raw_df = pd.read_csv(default_test_file)
         st.info("Loaded default test_data.csv from the project root. Upload another CSV to replace it.")
