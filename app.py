@@ -148,6 +148,8 @@ if DATASET_SOURCE:
 
 # sidebar
 
+default_test_file = os.path.join(ROOT, "test_data.csv")
+
 with st.sidebar:
     st.header("Controls")
 
@@ -156,6 +158,15 @@ with st.sidebar:
         type=["csv"],
         help="Upload test_data.csv generated during training.",
     )
+
+    if os.path.exists(default_test_file):
+        st.markdown(
+            "Default `test_data.csv` is loaded automatically. Remove it and upload another CSV file when required."
+        )
+    else:
+        st.markdown(
+            "No default file found. Upload `test_data.csv` or another compatible CSV file in the sidebar."
+        )
 
     model_choice = st.selectbox(
         "Select model",
@@ -172,14 +183,22 @@ tabs = st.tabs(["Results", "Dataset Info", "About"])
 # TAB 1: Results
 
 with tabs[0]:
-    if uploaded is None:
+    if uploaded is not None:
+        raw_df = pd.read_csv(uploaded)
+    elif os.path.exists(default_test_file):
+        raw_df = pd.read_csv(default_test_file)
+        st.info("Loaded default test_data.csv from the project root. Upload another CSV to replace it.")
+    else:
+        raw_df = None
+
+    if raw_df is None:
         st.info("Upload a CSV file from the sidebar to see model predictions and metrics.")
         st.markdown(
             "Expected format: same columns as training data, including the "
             f"`{TARGET_COLUMN}` target column."
         )
     else:
-        raw_df = pd.read_csv(uploaded)
+        st.write(f"**Uploaded:** {raw_df.shape[0]} rows x {raw_df.shape[1]} columns")
         st.write(f"**Uploaded:** {raw_df.shape[0]} rows x {raw_df.shape[1]} columns")
 
         with st.spinner("Preprocessing..."):
