@@ -165,6 +165,7 @@ with st.sidebar:
     )
 
     if uploaded is not None:
+        st.session_state.use_default_data = False
         st.markdown(f"**Current file:** `{uploaded.name}`")
         st.caption("Upload another file to replace it.")
     elif default_exists and st.session_state.use_default_data:
@@ -172,7 +173,8 @@ with st.sidebar:
         st.caption("This file is loaded automatically from the project root.")
         if st.button("Remove default test_data.csv", key="remove_default"):
             st.session_state.use_default_data = False
-            uploaded = None
+            st.session_state.uploaded_file = None
+            st.experimental_rerun()
     else:
         st.markdown(
             "No file selected. Upload `test_data.csv` or another compatible CSV file in the sidebar."
