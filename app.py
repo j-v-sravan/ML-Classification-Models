@@ -177,6 +177,8 @@ with st.sidebar:
     if uploaded_file is not None:
         st.session_state.selected_file = uploaded_file
         st.session_state.use_default_data = False
+    elif not st.session_state.use_default_data:
+        st.session_state.selected_file = None
 
     if st.session_state.selected_file is not None:
         st.markdown(f"**Current file:** `{st.session_state.selected_file.name}`")
@@ -209,8 +211,20 @@ tabs = st.tabs(["Results", "Dataset Info", "About"])
 # TAB 1: Results
 
 with tabs[0]:
+    raw_df = None
     if st.session_state.selected_file is not None:
-        raw_df = pd.read_csv(st.session_state.selected_file)
+        try:
+            if hasattr(st.session_state.selected_file, "size") and st.session_state.selected_file.size == 0:
+                raise pd.errors.EmptyDataError("No data in selected file")
+            raw_df = pd.read_csv(st.session_state.selected_file)
+        except pd.errors.EmptyDataError:
+            st.warning("Selected file was cleared. Please upload a new CSV or use the default file.")
+            st.session_state.selected_file = None
+            raw_df = None
+        except Exception as exc:
+            st.error(f"Error reading selected file: {exc}")
+            st.session_state.selected_file = None
+            raw_df = None
     elif default_exists and st.session_state.use_default_data:
         raw_df = pd.read_csv(default_test_file)
         st.info("Loaded default test_data.csv from the project root. Upload another CSV to replace it.")
