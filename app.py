@@ -164,20 +164,18 @@ with st.sidebar:
         key="uploaded_file",
     )
 
-    if uploaded is None and default_exists and st.session_state.use_default_data:
-        st.markdown(
-            "Default `test_data.csv` is loaded automatically. Upload another CSV to replace it or click the button below to clear the default file."
-        )
+    if uploaded is not None:
+        st.markdown(f"**Current file:** `{uploaded.name}`")
+        st.caption("Upload another file to replace it.")
+    elif default_exists and st.session_state.use_default_data:
+        st.markdown("**Current file:** `test_data.csv` (default)")
+        st.caption("This file is loaded automatically from the project root.")
         if st.button("Remove default test_data.csv"):
             st.session_state.use_default_data = False
-            uploaded = None
-    elif not default_exists:
+            st.experimental_rerun()
+    else:
         st.markdown(
-            "No default file found. Upload `test_data.csv` or another compatible CSV file in the sidebar."
-        )
-    elif uploaded is not None:
-        st.markdown(
-            "Using the uploaded CSV. Remove it from the file uploader to revert to the default `test_data.csv` if available."
+            "No file selected. Upload `test_data.csv` or another compatible CSV file in the sidebar."
         )
 
     model_choice = st.selectbox(
