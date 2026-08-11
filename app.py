@@ -155,11 +155,14 @@ if "use_default_data" not in st.session_state:
     st.session_state.use_default_data = default_exists
 if "selected_file" not in st.session_state:
     st.session_state.selected_file = None
+if "uploader_key_index" not in st.session_state:
+    st.session_state.uploader_key_index = 0
 
 
 def clear_default_file():
     st.session_state.use_default_data = False
     st.session_state.selected_file = None
+    st.session_state.uploader_key_index += 1
 
 with st.sidebar:
     st.header("Controls")
@@ -168,7 +171,7 @@ with st.sidebar:
         "Upload test data (CSV)",
         type=["csv"],
         help="Upload test_data.csv generated during training.",
-        key="file_upload_widget",
+        key=f"file_upload_widget_{st.session_state.uploader_key_index}",
     )
 
     if uploaded_file is not None:
