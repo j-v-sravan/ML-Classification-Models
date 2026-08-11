@@ -1,6 +1,6 @@
-# ML Assignment 2 - Classification Model Comparison
+# ML Assignment 2 - Classification Model Comparison by Javvadi Venkata Sravan (BITS ID: 2025DA04058)
 
-**Course:** Machine Learning | BITS Pilani M.Tech (AIML/DSE)
+**Course:** Machine Learning | BITS Pilani M.Tech DSE
 
 ---
 
@@ -35,7 +35,7 @@ subscription within the last month.
 
 ## c. GitHub Repository Link
 
-**https://github.com/YOUR_USERNAME/ml-assignment-2**
+**https://github.com/j-v-sravan/ml-classification-models**
 
 Repository structure:
 
@@ -85,7 +85,7 @@ ml-assignment-2/
 
 ## Live Streamlit App
 
-**https://YOUR-APP.streamlit.app**
+**https://ml-classification-models.streamlit.app/**
 
 ---
 
@@ -93,8 +93,8 @@ ml-assignment-2/
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/YOUR_USERNAME/ml-assignment-2.git
-cd ml-assignment-2
+git clone https://github.com/j-v-sravan/ML-Classification-Models.git
+cd ML-Classification-Models
 
 # 2. Install dependencies
 pip install -r requirements.txt

@@ -141,7 +141,7 @@ st.set_page_config(
     layout="wide",
 )
 
-st.title("ML Assignment 2 - Classification Model Comparison")
+st.title("ML Assignment 2 - Classification Model Comparison by Javvadi Venkata Sravan (BITS ID: 2025DA04058)")
 st.markdown(f"**Dataset:** {DATASET_NAME} | **Problem type:** {PROBLEM_TYPE}")
 if DATASET_SOURCE:
     st.caption(f"Source: {DATASET_SOURCE}")
@@ -163,7 +163,7 @@ with st.sidebar:
     )
 
     st.markdown("---")
-    st.caption("BITS Pilani M.Tech AIML | Machine Learning")
+    st.caption("BITS Pilani M.Tech DSE | Machine Learning")
 
 # main content
 
@@ -286,7 +286,7 @@ with tabs[2]:
 ### About This App
 
 This Streamlit application was built as part of ML Assignment 2 for
-BITS Pilani M.Tech (AIML/DSE) - Machine Learning.
+BITS Pilani M.Tech DSE - Machine Learning by Javvadi Venkata Sravan (BITS ID: 2025DA04058)
 
 #### How to use
 1. Upload test_data.csv via the sidebar
