@@ -220,7 +220,6 @@ with tabs[0]:
         )
     else:
         st.write(f"**Uploaded:** {raw_df.shape[0]} rows x {raw_df.shape[1]} columns")
-        st.write(f"**Uploaded:** {raw_df.shape[0]} rows x {raw_df.shape[1]} columns")
 
         with st.spinner("Preprocessing..."):
             X_up, y_up = preprocess_uploaded(raw_df)
