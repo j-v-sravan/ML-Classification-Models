@@ -149,6 +149,10 @@ if DATASET_SOURCE:
 # sidebar
 
 default_test_file = os.path.join(ROOT, "test_data.csv")
+default_exists = os.path.exists(default_test_file)
+
+if "use_default_data" not in st.session_state:
+    st.session_state.use_default_data = default_exists
 
 with st.sidebar:
     st.header("Controls")
@@ -157,15 +161,23 @@ with st.sidebar:
         "Upload test data (CSV)",
         type=["csv"],
         help="Upload test_data.csv generated during training.",
+        key="uploaded_file",
     )
 
-    if os.path.exists(default_test_file):
+    if uploaded is None and default_exists and st.session_state.use_default_data:
         st.markdown(
-            "Default `test_data.csv` is loaded automatically. Remove it and upload another CSV file when required."
+            "Default `test_data.csv` is loaded automatically. Upload another CSV to replace it or click the button below to clear the default file."
         )
-    else:
+        if st.button("Remove default test_data.csv"):
+            st.session_state.use_default_data = False
+            uploaded = None
+    elif not default_exists:
         st.markdown(
             "No default file found. Upload `test_data.csv` or another compatible CSV file in the sidebar."
+        )
+    elif uploaded is not None:
+        st.markdown(
+            "Using the uploaded CSV. Remove it from the file uploader to revert to the default `test_data.csv` if available."
         )
 
     model_choice = st.selectbox(
@@ -185,7 +197,7 @@ tabs = st.tabs(["Results", "Dataset Info", "About"])
 with tabs[0]:
     if uploaded is not None:
         raw_df = pd.read_csv(uploaded)
-    elif os.path.exists(default_test_file):
+    elif default_exists and st.session_state.use_default_data:
         raw_df = pd.read_csv(default_test_file)
         st.info("Loaded default test_data.csv from the project root. Upload another CSV to replace it.")
     else:
