@@ -155,8 +155,6 @@ if "use_default_data" not in st.session_state:
     st.session_state.use_default_data = default_exists
 if "selected_file" not in st.session_state:
     st.session_state.selected_file = None
-if "uploaded_file" not in st.session_state:
-    st.session_state.uploaded_file = None
 
 with st.sidebar:
     st.header("Controls")
@@ -165,7 +163,7 @@ with st.sidebar:
         "Upload test data (CSV)",
         type=["csv"],
         help="Upload test_data.csv generated during training.",
-        key="uploaded_file",
+        key="file_upload_widget",
     )
 
     if uploaded_file is not None:
@@ -181,7 +179,6 @@ with st.sidebar:
         if st.button("Remove default test_data.csv", key="remove_default"):
             st.session_state.use_default_data = False
             st.session_state.selected_file = None
-            st.session_state.uploaded_file = None
     else:
         st.markdown(
             "No file selected. Upload `test_data.csv` or another compatible CSV file in the sidebar."
