@@ -243,7 +243,7 @@ with tabs[0]:
                     return [
                         "background-color: #d4edda; color: #0f3d03"
                         if v == s.max()
-                        else "background-color: #0f1119; color: #f8fafc"
+                        else ""
                         for v in s
                     ]
 
@@ -251,15 +251,6 @@ with tabs[0]:
                     df_comp.style
                     .apply(highlight_max, axis=0)
                     .format("{:.4f}")
-                    .set_table_styles([
-                        {
-                            "selector": "th",
-                            "props": [
-                                ("background-color", "#111827"),
-                                ("color", "#f8fafc"),
-                            ],
-                        }
-                    ])
                 )
 
                 st.dataframe(styled_df, use_container_width=True)
