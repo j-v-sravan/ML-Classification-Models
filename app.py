@@ -159,7 +159,7 @@ with st.sidebar:
 
     model_choice = st.selectbox(
         "Select model",
-        ["-- All Models --"] + list(MODEL_FILES.keys()),
+        ["All Models"] + list(MODEL_FILES.keys()),
     )
 
     st.markdown("---")
@@ -193,7 +193,7 @@ with tabs[0]:
         else:
             models_to_eval = (
                 list(MODEL_FILES.keys())
-                if model_choice == "-- All Models --"
+                if model_choice == "All Models"
                 else [model_choice]
             )
 
@@ -211,7 +211,7 @@ with tabs[0]:
                     all_metrics[mname] = metrics
                     all_preds[mname]   = y_pred
 
-                    if model_choice != "-- All Models --":
+                    if model_choice != "All Models":
                         st.subheader(f"Results - {mname}")
                         col1, col2, col3 = st.columns(3)
                         col1.metric("Accuracy",  f"{metrics['Accuracy']:.4f}")
@@ -234,18 +234,35 @@ with tabs[0]:
                 except Exception as e:
                     st.error(f"Error evaluating {mname}: {e}")
 
-            if model_choice == "-- All Models --" and all_metrics:
+            if model_choice == "All Models" and all_metrics:
                 st.subheader("Comparison Table - All Models")
                 df_comp = pd.DataFrame(all_metrics).T
                 df_comp.index.name = "Model"
 
                 def highlight_max(s):
-                    return ["background-color: #d4edda" if v == s.max() else "" for v in s]
+                    return [
+                        "background-color: #d4edda; color: #0f3d03"
+                        if v == s.max()
+                        else "background-color: #0f1119; color: #f8fafc"
+                        for v in s
+                    ]
 
-                st.dataframe(
-                    df_comp.style.apply(highlight_max, axis=0).format("{:.4f}"),
-                    use_container_width=True,
+                styled_df = (
+                    df_comp.style
+                    .apply(highlight_max, axis=0)
+                    .format("{:.4f}")
+                    .set_table_styles([
+                        {
+                            "selector": "th",
+                            "props": [
+                                ("background-color", "#111827"),
+                                ("color", "#f8fafc"),
+                            ],
+                        }
+                    ])
                 )
+
+                st.dataframe(styled_df, use_container_width=True)
 
                 best = df_comp["F1 Score"].idxmax()
                 st.success(f"Best model by F1 Score: {best} ({df_comp.loc[best, 'F1 Score']:.4f})")
